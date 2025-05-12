@@ -1,0 +1,2 @@
+/Users/nursultanjumashov/flutter/projects/chelnok-mob/android/app/.cxx/RelWithDebInfo/4466x1s4/armeabi-v7a/CMakeFiles/edit_cache.dir
+/Users/nursultanjumashov/flutter/projects/chelnok-mob/android/app/.cxx/RelWithDebInfo/4466x1s4/armeabi-v7a/CMakeFiles/rebuild_cache.dir

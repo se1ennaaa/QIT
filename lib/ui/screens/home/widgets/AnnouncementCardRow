@@ -1,0 +1,95 @@
+import 'package:flutter/material.dart';
+import 'package:qit_test/data/models/announcement_model.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+class AnnouncementCardRow extends StatelessWidget {
+  final Announcement announcement;
+  final String? searchQuery;
+
+  const AnnouncementCardRow({
+    super.key,
+    required this.announcement,
+    this.searchQuery,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+      },
+      child: Container(
+        height: 180,
+        decoration: BoxDecoration(
+          color: Color(0xFFF5F5F5),
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // 🔷 Картинка
+            ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+              ),
+              child: Image.network(
+                announcement.images?.first ?? '',
+                height: 100,
+                width: double.infinity,
+                fit: BoxFit.cover,
+                errorBuilder: (_, __, ___) => Container(
+                  height: 100,
+                  color: Colors.grey[300],
+                  child: const Center(child: Icon(Icons.image, size: 40)),
+                ),
+              ),
+            ),
+
+            // 🔷 Текст
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    announcement.title,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (announcement.subtitle != null)
+                    Text(
+                      announcement.subtitle!,
+                      style: const TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Icon(Icons.attach_money, size: 16, color: Colors.green),
+                      const SizedBox(width: 4),
+                      Text(
+                        announcement.price ?? 'Договорная',
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}

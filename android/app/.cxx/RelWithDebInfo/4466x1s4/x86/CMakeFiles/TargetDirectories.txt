@@ -1,0 +1,2 @@
+/Users/nursultanjumashov/flutter/projects/chelnok-mob/android/app/.cxx/RelWithDebInfo/4466x1s4/x86/CMakeFiles/edit_cache.dir
+/Users/nursultanjumashov/flutter/projects/chelnok-mob/android/app/.cxx/RelWithDebInfo/4466x1s4/x86/CMakeFiles/rebuild_cache.dir

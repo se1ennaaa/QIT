@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "997827638893",
+    "project_id": "chelnok-474e0",
+    "storage_bucket": "chelnok-474e0.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:997827638893:android:e63c922ab88425fe6ff164",
+        "android_client_info": {
+          "package_name": "dev.qit.chelnok"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "997827638893-3p4vjlhv0nah3e9rfb1kpcqfcs4nvgs1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "dev.qit.chelnok",
+            "certificate_hash": "36ed0d57d3131eb2a3fa91a4507618a4020dc953"
+          }
+        },
+        {
+          "client_id": "997827638893-iam152p3f03rlrgo72b1m8tm5fv7egt0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClB0HNJsy-vn4stzvHTFWocOwMIOlSKGI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "997827638893-iam152p3f03rlrgo72b1m8tm5fv7egt0.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "997827638893-i36bhlmdhgc6mo2d78k6q9rfi08mq2uo.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "dev.qit.chelnok"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
