@@ -133,28 +133,17 @@ class SewingWorkshopsScreen_Announcement extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final scrollController = useScrollController();
     final announcements = useState<List<Announcement>>([]);
     final isLoading = useState(false);
-    final page = useState(1);
-    final hasMore = useState(true);
 
-    const int perPage = 12;
-
-    Future<void> fetchAnnouncements({bool isRefresh = false}) async {
-      if (isLoading.value || (!hasMore.value && !isRefresh)) return;
+    Future<void> fetchAnnouncements() async {
+      if (isLoading.value) return;
 
       isLoading.value = true;
 
-      if (isRefresh) {
-        page.value = 1;
-        hasMore.value = true;
-        announcements.value = [];
-      }
-
-      final response = await http.get(Uri.parse(
-        'https://chelnok.kg/api/main?page=${page.value}&offset=$perPage',
-      ));
+      final response = await http.get(
+        Uri.parse('https://chelnok.kg/api/main?offset=9999'),
+      );
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
@@ -162,12 +151,7 @@ class SewingWorkshopsScreen_Announcement extends HookWidget {
             .map((e) => Announcement.fromJson(e))
             .toList();
 
-        if (newItems.length < perPage) {
-          hasMore.value = false;
-        }
-
-        announcements.value = [...announcements.value, ...newItems];
-        page.value++;
+        announcements.value = newItems;
       } else {
         print('Ошибка при загрузке: ${response.statusCode}');
       }
@@ -177,20 +161,8 @@ class SewingWorkshopsScreen_Announcement extends HookWidget {
 
     useEffect(() {
       fetchAnnouncements();
-      return;
-    }, []);
-
-    useEffect(() {
-      scrollController.addListener(() {
-        if (scrollController.position.pixels >=
-                scrollController.position.maxScrollExtent - 200 &&
-            !isLoading.value &&
-            hasMore.value) {
-          fetchAnnouncements();
-        }
-      });
       return null;
-    }, [scrollController]);
+    }, []);
 
     return SafeAreaWrapper(
       child: Scaffold(
@@ -198,16 +170,14 @@ class SewingWorkshopsScreen_Announcement extends HookWidget {
           title: const Text('Швейные цеха'),
         ),
         body: RefreshIndicator.adaptive(
-          onRefresh: () async => fetchAnnouncements(isRefresh: true),
+          onRefresh: fetchAnnouncements,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
             child: announcements.value.isEmpty && isLoading.value
                 ? const Center(child: CircularProgressIndicator())
                 : GridView.builder(
-                    controller: scrollController,
                     physics: const AlwaysScrollableScrollPhysics(),
-                    itemCount:
-                        announcements.value.length + (hasMore.value ? 1 : 0),
+                    itemCount: announcements.value.length,
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
@@ -216,16 +186,6 @@ class SewingWorkshopsScreen_Announcement extends HookWidget {
                       childAspectRatio: 0.7,
                     ),
                     itemBuilder: (context, index) {
-                      if (index == announcements.value.length &&
-                          hasMore.value) {
-                        return const Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: CircularProgressIndicator(),
-                          ),
-                        );
-                      }
-
                       final item = announcements.value[index];
                       return AnnouncementCard(
                         announcement: item,

@@ -18,7 +18,8 @@ class HomeScreen extends HookWidget {
 
   @override
   Widget build(BuildContext context) {
-    final announcements = useState<List<Announcement>>([]);
+    final allAnnouncements = useState<List<Announcement>>([]);
+    final filteredAnnouncements = useState<List<Announcement>>([]);
     final page = useState(1);
     final isLoading = useState(false);
 
@@ -36,7 +37,8 @@ class HomeScreen extends HookWidget {
             .map((e) => Announcement.fromJson(e))
             .toList();
 
-        announcements.value = [...announcements.value, ...newItems];
+        allAnnouncements.value = [...allAnnouncements.value, ...newItems];
+        filteredAnnouncements.value = allAnnouncements.value;
         page.value++;
       }
 
@@ -49,7 +51,12 @@ class HomeScreen extends HookWidget {
     }, []);
 
     void _filter(String query) {
-      debugPrint('Фильтрация по: $query');
+      final lowerQuery = query.toLowerCase();
+      filteredAnnouncements.value = allAnnouncements.value.where((a) {
+        return a.title.toLowerCase().contains(lowerQuery) ||
+            a.address.toLowerCase().contains(lowerQuery) ||
+            (a.description ?? '').toLowerCase().contains(lowerQuery);
+      }).toList();
     }
 
     return SafeAreaWrapper(
@@ -61,6 +68,9 @@ class HomeScreen extends HookWidget {
             SliverAppBar(
               elevation: 2,
               toolbarHeight: 70,
+              floating: true,
+              snap: true,
+              backgroundColor: Colors.white,
               flexibleSpace: SafeArea(
                 bottom: false,
                 child: TopHeaderWidget(onSearch: _filter),
@@ -94,21 +104,21 @@ class HomeScreen extends HookWidget {
               sliver: SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
+                    final announcement = filteredAnnouncements.value[index];
                     return AnnouncementCard(
-                      announcement: announcements.value[index],
+                      announcement: announcement,
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => AnnouncementDetailScreen(
-                              announcement: announcements.value[index],
-                            ),
+                            builder: (_) =>
+                                AnnouncementDetailScreen(announcement: announcement),
                           ),
                         );
                       },
                     );
                   },
-                  childCount: announcements.value.length,
+                  childCount: filteredAnnouncements.value.length,
                 ),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2,
